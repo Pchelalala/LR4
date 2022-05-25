@@ -10,20 +10,31 @@ public class DataBase{
     protected static int modeD = 0;
     protected Map<LocalDate,String> allHistory = new HashMap<LocalDate,String>();
 
-    private List<Car> baseOfCars = Arrays.asList(
-            new Car("Mustang",150,100000,true),
-            new Car("Toyota Supra",180,150000,true),
-            new Car("BMW X5",140,120000,false),
-            new Car("Porsche",190,1200000,true),
-            new Car("Lexus", 160,4000000,true)
-    );
-
+    private List<Car> baseOfCars;
     public List<Car> getBaseOfCars() {
         return baseOfCars;
     }
+    public DataBase(){
+        var cars = Arrays.asList(
+                new Car("Mustang",150,100000,true),
+                new Car("Toyota Supra",180,150000,true),
+                new Car("BMW X5",140,120000,false),
+                new Car("Porsche",190,1200000,true),
+                new Car("Lexus", 160,4000000,true)
+        );
+        this.baseOfCars = new ArrayList<>(cars);
 
+    }
     public void setBaseOfCars(List<Car> baseOfCars) {
         this.baseOfCars = baseOfCars;
+    }
+
+    public List<User> getBaseOfUsers() {
+        return baseOfUsers;
+    }
+
+    public void setBaseOfUsers(List<User> baseOfUsers) {
+        this.baseOfUsers = baseOfUsers;
     }
 
     protected List<User> baseOfUsers = new ArrayList<>();
@@ -242,7 +253,8 @@ public class DataBase{
         return true;
     }
 
-    protected boolean SearchInStatement(){
+    protected int SearchInStatement(){
+        int generalCount = 0;
         int count = 0;
         for (Car c : baseOfCars){
             for (User u : baseOfUsers){
@@ -252,10 +264,11 @@ public class DataBase{
                     }
                }
                System.out.print(c.getName() + " wants " + count + '\n');
+               generalCount+=count;
                count = 0;
             }
         }
-        return true;
+        return generalCount;
     }
 
     protected boolean CountOfClientsStatement(){

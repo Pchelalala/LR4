@@ -47,7 +47,6 @@ public class Car implements Comparable<Car>{
         this.servicable = servicable;
     }
 
-
     @Override
     public String toString(){
         return "Name: "+ this.getName()+", "+

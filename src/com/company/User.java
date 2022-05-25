@@ -11,10 +11,16 @@ public class User {
     private String password;
     protected String statement;
     protected Map<LocalDate,String> userHistory = new HashMap<LocalDate,String>();
-    private final DataBase dataBase;
+    private DataBase dataBase;
 
     public User(DataBase dataBase) {
         this.dataBase = dataBase;
+    }
+
+    public User(String name, String password, Map<LocalDate, String> userHistory) {
+        this.name = name;
+        this.password = password;
+        this.userHistory = userHistory;
     }
 
     public User(String name, DataBase dataBase){

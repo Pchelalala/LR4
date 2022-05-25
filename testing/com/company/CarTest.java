@@ -75,6 +75,6 @@ class CarTest {
 
         var car = new Car("Car",100,22111,true);
         var car1 = new Car("Car",180,1000000,false);
-        assertEquals(car.compareTo(car1), 1);
+        assertEquals(0, car.compareTo(car1));
     }
 }
