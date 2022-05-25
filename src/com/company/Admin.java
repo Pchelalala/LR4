@@ -1,11 +1,9 @@
 package com.company;
 
 import java.util.Scanner;
-
 import static com.company.Main.Authorization;
 
 public class Admin {
-    //private String password = "111";
     DataBase dataBase;
 
     public Admin(DataBase dataBase) {
