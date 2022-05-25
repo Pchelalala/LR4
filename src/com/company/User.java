@@ -63,6 +63,7 @@ public class User {
 
         System.out.print("Enter your name: ");
         this.name = in.next();
+
         System.out.print("Enter your password: ");
         this.password = in.next();
 
@@ -122,6 +123,7 @@ public class User {
             }
         }
     }
+
     public String getName() {
         return this.name;
     }
@@ -142,7 +144,6 @@ public class User {
         this.statement = statement;
 
         userHistory.put(date,statement);
-
         dataBase.addHistory(date,statement);
 
         return true;

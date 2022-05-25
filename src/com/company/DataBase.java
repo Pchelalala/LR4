@@ -190,8 +190,10 @@ public class DataBase{
         if(fmode == 2 || fmode == 3) {
             System.out.print("Enter minvalue:");
             int minValue = in.nextInt();
+
             System.out.print("Enter maxvalue:");
             int maxValue = in.nextInt();
+
             if (fmode == 2){
                 FilterShips(baseOfCars, (Car car) -> car.getPower() >= minValue &&
                         car.getPower() <= maxValue);
@@ -226,12 +228,14 @@ public class DataBase{
         Scanner in = new Scanner(System.in);
         System.out.println("Reverse sort?(1 - yes/ 0 - no)");
         int reverse = in.nextInt();
+
         if(reverse == 1){
             baseOfUsers.sort(Comparator.comparing(User::getName).reversed());
         }
         else if(reverse == 0){
             baseOfUsers.sort(Comparator.comparing(User::getName));
         }
+
         for (var c : baseOfUsers) {
             System.out.println(c);
         }

@@ -3,7 +3,6 @@ package com.company;
 import java.util.Scanner;
 
 public class Main {
-
     static DataBase dataBase = new DataBase();
     public static void main(String[] args) {
         while (true) {

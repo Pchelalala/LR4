@@ -67,7 +67,6 @@ public class Admin {
                     System.out.println("You enter wrong number. Try again!");
             }
         }
-
     }
 
     public boolean EnterToAccount(){
