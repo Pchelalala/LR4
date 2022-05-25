@@ -3,7 +3,6 @@ package com.company;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import static com.company.LambdaDemo.FilterShips;
 
 public class DataBase{
@@ -11,20 +10,28 @@ public class DataBase{
     protected static int modeD = 0;
     protected Map<LocalDate,String> allHistory = new HashMap<LocalDate,String>();
 
-    private Car baseOfCars[] = {
+    private List<Car> baseOfCars = Arrays.asList(
             new Car("Mustang",150,100000,true),
             new Car("Toyota Supra",180,150000,true),
             new Car("BMW X5",140,120000,false),
             new Car("Porsche",190,1200000,true),
             new Car("Lexus", 160,4000000,true)
-    };
+    );
+
+    public List<Car> getBaseOfCars() {
+        return baseOfCars;
+    }
+
+    public void setBaseOfCars(List<Car> baseOfCars) {
+        this.baseOfCars = baseOfCars;
+    }
 
     protected List<User> baseOfUsers = new ArrayList<>();
 
     public void getListOfCars(){
-        for(int i = 1; i<baseOfCars.length+1;i++){
+        for(int i = 1; i<baseOfCars.size()+1;i++){
             System.out.print(i);
-            System.out.println(") " + baseOfCars[i-1]);
+            System.out.println(") " + baseOfCars.get(i-1));
         }
         System.out.println();
     }
@@ -35,7 +42,7 @@ public class DataBase{
         System.out.print("Which car do you want edit? ");
         indexOfCar = in.nextInt();
         System.out.println();
-        this.EditCarInfo(baseOfCars[indexOfCar-1]);
+        this.EditCarInfo(baseOfCars.get(indexOfCar-1));
     }
 
     private boolean EditCarInfo(Car c){
@@ -77,7 +84,7 @@ public class DataBase{
             }
             default -> {
                 System.out.print("Wrong number, try again");
-                this.EditCarInfo(baseOfCars[indexOfCar - 1]);
+                this.EditCarInfo(baseOfCars.get(indexOfCar - 1));
             }
         }
        return true;
@@ -92,19 +99,16 @@ public class DataBase{
                 "5 - come back to menu\n" +
                 "Enter a number:");
         Scanner in = new Scanner(System.in);
+
         modeD = in.nextInt();
         Car.mode = modeD;
-        System.out.println("Reverse sort?(1 - yes/ 0 - no)");
-        int reverse = in.nextInt();
-        if(reverse == 1){
-            Arrays.sort(baseOfCars, Collections.reverseOrder());
-        }
-        else if(reverse == 0){
-            Arrays.sort(baseOfCars);
-        }
+
+        baseOfCars.sort(Comparator.comparing(Car::getName));
+
         for (Car c : baseOfCars) {
             System.out.println(c);
         }
+
         System.out.print("What next?\n" +
                 "1 - sort by another parameter\n" +
                 "2 - come back to main menu\n" +
