@@ -7,11 +7,15 @@ import java.util.Scanner;
 import static com.company.Main.Authorization;
 
 public class User {
+    private Integer id;
     private String name;
     private String password;
     protected String statement;
     protected Map<LocalDate,String> userHistory = new HashMap<LocalDate,String>();
     private DataBase dataBase;
+
+    public User() {
+    }
 
     public User(DataBase dataBase) {
         this.dataBase = dataBase;
@@ -26,6 +30,34 @@ public class User {
     public User(String name, DataBase dataBase){
         this.name = name;
         this.dataBase = dataBase;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
+
+    public void setStatement(String statement) {
+        this.statement = statement;
     }
 
     public boolean UserMenu(){

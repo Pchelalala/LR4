@@ -1,9 +1,24 @@
 package com.company;
 
+import com.company.DB.ConnectionFactory;
+import com.company.DB.DBUtils;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-    static DataBase dataBase = new DataBase();
+    static DataBase dataBase;
+
+    static {
+        try {
+            DBUtils.initBD();
+            dataBase = new DataBase();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public static void main(String[] args) {
         while (true) {
             Authorization();

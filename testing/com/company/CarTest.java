@@ -65,7 +65,7 @@ class CarTest {
     void setServicableTest() {
         var car = new Car("Car",100,22111,true);
 
-        car.setServicable(true);
+        car.setServiceable(true);
         assertEquals(Boolean.TRUE,car.getServicable());
     }
 

@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.DB.CarJDBCDao;
+import com.company.DB.UserJDBCDao;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -9,12 +13,10 @@ public class DataBase{
     private int indexOfCar = 0;
     protected static int modeD = 0;
     protected Map<LocalDate,String> allHistory = new HashMap<LocalDate,String>();
+    private CarJDBCDao carJDBCDao = new CarJDBCDao();
+    private UserJDBCDao userJDBCDao = new UserJDBCDao();
 
-    private List<Car> baseOfCars;
-    public List<Car> getBaseOfCars() {
-        return baseOfCars;
-    }
-    public DataBase(){
+    public DataBase() throws SQLException {
         var cars = Arrays.asList(
                 new Car("Mustang",150,100000,true),
                 new Car("Toyota Supra",180,150000,true),
@@ -22,27 +24,23 @@ public class DataBase{
                 new Car("Porsche",190,1200000,true),
                 new Car("Lexus", 160,4000000,true)
         );
-        this.baseOfCars = new ArrayList<>(cars);
+        for (var item : cars) {
+            carJDBCDao.insert(item);
+        }
 
     }
-    public void setBaseOfCars(List<Car> baseOfCars) {
-        this.baseOfCars = baseOfCars;
+    public List<Car> getBaseOfCars() {
+        return carJDBCDao.getAll();
     }
 
     public List<User> getBaseOfUsers() {
-        return baseOfUsers;
+        return userJDBCDao.getAll();
     }
-
-    public void setBaseOfUsers(List<User> baseOfUsers) {
-        this.baseOfUsers = baseOfUsers;
-    }
-
-    protected List<User> baseOfUsers = new ArrayList<>();
 
     public void getListOfCars(){
-        for(int i = 1; i<baseOfCars.size()+1;i++){
+        for(int i = 1; i<getBaseOfCars().size()+1;i++){
             System.out.print(i);
-            System.out.println(") " + baseOfCars.get(i-1));
+            System.out.println(") " + getBaseOfCars().get(i-1));
         }
         System.out.println();
     }
@@ -53,7 +51,7 @@ public class DataBase{
         System.out.print("Which car do you want edit? ");
         indexOfCar = in.nextInt();
         System.out.println();
-        this.EditCarInfo(baseOfCars.get(indexOfCar-1));
+        this.EditCarInfo(getBaseOfCars().get(indexOfCar-1));
     }
 
     private boolean EditCarInfo(Car c){
@@ -88,14 +86,14 @@ public class DataBase{
             case 4 -> {
                 System.out.print("Enter new serviceable:");
                 boolean newService = in.nextBoolean();
-                c.setServicable(newService);
+                c.setServiceable(newService);
             }
             case 5 -> {
                 return true;
             }
             default -> {
                 System.out.print("Wrong number, try again");
-                this.EditCarInfo(baseOfCars.get(indexOfCar - 1));
+                this.EditCarInfo(getBaseOfCars().get(indexOfCar - 1));
             }
         }
        return true;
@@ -114,9 +112,9 @@ public class DataBase{
         modeD = in.nextInt();
         Car.mode = modeD;
 
-        baseOfCars.sort(Comparator.comparing(Car::getName));
+        getBaseOfCars().sort(Comparator.comparing(Car::getName));
 
-        for (Car c : baseOfCars) {
+        for (Car c : getBaseOfCars()) {
             System.out.println(c);
         }
 
@@ -165,26 +163,26 @@ public class DataBase{
 
     protected void SearchByParam(int param, Object o){
         if (param == 1){
-            for (Car c : baseOfCars){
+            for (Car c : getBaseOfCars()){
                 if(((String) o).compareTo(c.getName())==0)
                     System.out.println(c);
             }
         }
         if (param == 2){
-            for (Car c : baseOfCars){
+            for (Car c : getBaseOfCars()){
                 if(Integer.parseInt((String)o)==c.getPower())
                     System.out.println(c);
             }
         }
         if (param == 3){
-            for (Car c : baseOfCars){
+            for (Car c : getBaseOfCars()){
                 if(Integer.parseInt((String)o)==c.getCost())
                     System.out.println(c);
             }
         }
         if (param == 4){
-            for (Car c : baseOfCars){
-                if(Boolean.parseBoolean((String)o) == c.getServicable())
+            for (Car c : getBaseOfCars()){
+                if(Boolean.parseBoolean((String)o) == c.isServiceable())
                     System.out.println(c);
             }
         }
@@ -206,31 +204,32 @@ public class DataBase{
             int maxValue = in.nextInt();
 
             if (fmode == 2){
-                FilterShips(baseOfCars, (Car car) -> car.getPower() >= minValue &&
+                FilterShips(getBaseOfCars(), (Car car) -> car.getPower() >= minValue &&
                         car.getPower() <= maxValue);
             }
             if (fmode == 3){
-                FilterShips(baseOfCars, (Car s) -> s.getCost() >= minValue &&
+                FilterShips(getBaseOfCars(), (Car s) -> s.getCost() >= minValue &&
                         s.getCost() <= maxValue);
             }
         }
         else if(fmode == 1){
             System.out.print("Enter a letter(s):");
             String strValue = in.next();
-            FilterShips(baseOfCars, (Car s) -> s.getName().contains(strValue));
+            FilterShips(getBaseOfCars(), (Car s) -> s.getName().contains(strValue));
         }
     }
 
     protected void addHistory(LocalDate date, String statement){
+
         allHistory.put(date, statement);
     }
 
     protected void AddUser(User user){
-        baseOfUsers.add(user);
+        userJDBCDao.insert(user);
     }
 
     public void getListOfClients(){
-        for(User user: baseOfUsers){
+        for(User user: getBaseOfUsers()){
             System.out.println(user);
         }
     }
@@ -240,14 +239,16 @@ public class DataBase{
         System.out.println("Reverse sort?(1 - yes/ 0 - no)");
         int reverse = in.nextInt();
 
+        var result = getBaseOfUsers();
+
         if(reverse == 1){
-            baseOfUsers.sort(Comparator.comparing(User::getName).reversed());
+            result.sort(Comparator.comparing(User::getName).reversed());
         }
         else if(reverse == 0){
-            baseOfUsers.sort(Comparator.comparing(User::getName));
+            result.sort(Comparator.comparing(User::getName));
         }
 
-        for (var c : baseOfUsers) {
+        for (var c : result) {
             System.out.println(c);
         }
         return true;
@@ -256,8 +257,8 @@ public class DataBase{
     protected int SearchInStatement(){
         int generalCount = 0;
         int count = 0;
-        for (Car c : baseOfCars){
-            for (User u : baseOfUsers){
+        for (Car c : getBaseOfCars()){
+            for (User u : getBaseOfUsers()){
                for(Map.Entry<LocalDate, String> item : u.userHistory.entrySet()){
                     if(item.getValue().contains(c.getName())){
                         count++;
@@ -273,7 +274,7 @@ public class DataBase{
 
     protected boolean CountOfClientsStatement(){
         int count = 0;
-        for(User user: baseOfUsers){
+        for(User user: getBaseOfUsers()){
             count = user.userHistory.size();
             System.out.print("This client has " + count + " statement(s)\n");
         }
@@ -287,7 +288,7 @@ public class DataBase{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateOrTime, formatter);
         try {
-            for (User u : baseOfUsers) {
+            for (User u : getBaseOfUsers()) {
                 for (Map.Entry<LocalDate, String> item : u.userHistory.entrySet()) {
                     if (item.getKey().equals(localDate)) {
                         System.out.println(item.toString());
