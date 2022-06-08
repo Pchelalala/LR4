@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.old.Car;
+import com.company.old.DataBase;
+import com.company.old.User;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

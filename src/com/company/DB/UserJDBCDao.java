@@ -1,7 +1,7 @@
 package com.company.DB;
 
 
-import com.company.User;
+import com.company.model.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

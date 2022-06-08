@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.old.DataBase;
+import com.company.old.User;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,7 +1,7 @@
 package com.company.DB;
 
 
-import com.company.Car;
+import com.company.model.Car;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
